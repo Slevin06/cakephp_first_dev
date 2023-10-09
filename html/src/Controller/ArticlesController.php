@@ -5,7 +5,9 @@ namespace App\Controller;
 
 use App\Model\Entity\Article;
 use App\Model\Table\ArticlesTable;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
+use Exception;
 
 /**
  * Articles Controller
@@ -19,16 +21,10 @@ class ArticlesController extends AppController
      * Index method
      *
      * @return void Renders view
+     * @throws Exception
      */
     public function index(): void
     {
-//        $this->paginate = [
-//            'contain' => ['Users'],
-//        ];
-//        $articles = $this->paginate($this->Articles);
-//
-//        $this->set(compact('articles'));
-
         $this->loadComponent('Paginator');
         $articles = $this->Paginator->paginate($this->Articles->find());
         $this->set(compact('articles'));
@@ -37,16 +33,12 @@ class ArticlesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Article id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @param string|null $slug
+     * @return void Renders view
      */
-    public function view($id = null)
+    public function view(string $slug = null): void
     {
-        $article = $this->Articles->get($id, [
-            'contain' => ['Users', 'Tags'],
-        ]);
-
+        $article = $this->Articles->findBySlug($slug)->firstOrFail();
         $this->set(compact('article'));
     }
 
@@ -77,7 +69,7 @@ class ArticlesController extends AppController
      *
      * @param string|null $id Article id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @throws RecordNotFoundException When record not found.
      */
     public function edit($id = null)
     {
@@ -103,7 +95,7 @@ class ArticlesController extends AppController
      *
      * @param string|null $id Article id.
      * @return \Cake\Http\Response|null|void Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @throws RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
