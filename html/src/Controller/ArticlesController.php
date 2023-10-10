@@ -7,6 +7,7 @@ use App\Model\Entity\Article;
 use App\Model\Table\ArticlesTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Http\Response;
 use Exception;
 
 /**
@@ -45,7 +46,7 @@ class ArticlesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return Response|null|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -68,7 +69,7 @@ class ArticlesController extends AppController
      * Edit method
      *
      * @param string|null $id Article id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws RecordNotFoundException When record not found.
      */
     public function edit($id = null)
@@ -94,7 +95,7 @@ class ArticlesController extends AppController
      * Delete method
      *
      * @param string|null $id Article id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return Response|null|void Redirects to index.
      * @throws RecordNotFoundException When record not found.
      */
     public function delete($id = null)

@@ -1,8 +1,12 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Article $article
+ * @var AppView $this
+ * @var Article $article
  */
+
+use App\Model\Entity\Article;
+use App\View\AppView;
+
 ?>
 <div class="row">
     <aside class="column">

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -11,8 +14,8 @@ use Cake\Validation\Validator;
 /**
  * Articles Model
  *
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
+ * @property UsersTable&BelongsTo $Users
+ * @property TagsTable&BelongsToMany $Tags
  *
  * @method \App\Model\Entity\Article newEmptyEntity()
  * @method \App\Model\Entity\Article newEntity(array $data, array $options = [])
@@ -28,7 +31,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin TimestampBehavior
  */
 class ArticlesTable extends Table
 {
