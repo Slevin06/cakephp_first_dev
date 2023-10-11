@@ -8,6 +8,7 @@ use App\Model\Table\ArticlesTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Response;
+use Cake\Log\Log;
 use Exception;
 
 /**
@@ -84,6 +85,7 @@ class ArticlesController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
+            Log::error(var_export($article->getErrors(), true));
             $this->Flash->error(__('The article could not be saved. Please, try again.'));
         }
         $users = $this->Articles->Users->find('list', ['limit' => 200])->all();
