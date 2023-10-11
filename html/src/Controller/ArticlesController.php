@@ -97,10 +97,10 @@ class ArticlesController extends AppController
      * Delete method
      *
      * @param string|null $id Article id.
-     * @return Response|null|void Redirects to index.
+     * @return Response|null Redirects to index.
      * @throws RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(string $id = null): ?Response
     {
         $this->request->allowMethod(['post', 'delete']);
         $article = $this->Articles->get($id);
