@@ -356,7 +356,8 @@ return [
         'debug' => [
             'className' => FileLog::class,
             'path' => LOGS,
-            'file' => 'debug',
+//            'file' => 'debug',
+            'file' => 'debug_'. date( 'Ymd' ),
             'url' => env('LOG_DEBUG_URL', null),
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
@@ -364,7 +365,8 @@ return [
         'error' => [
             'className' => FileLog::class,
             'path' => LOGS,
-            'file' => 'error',
+//            'file' => 'error',
+            'file' => 'error_'. date( 'Ymd' ),
             'url' => env('LOG_ERROR_URL', null),
             'scopes' => false,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],

@@ -72,7 +72,7 @@ class ArticlesController extends AppController
      * @return Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(string $id = null)
     {
         $article = $this->Articles->get($id, [
             'contain' => ['Tags'],
