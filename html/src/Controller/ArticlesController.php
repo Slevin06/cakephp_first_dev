@@ -112,4 +112,22 @@ class ArticlesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * タグで記事検索する
+     *
+     * @return void
+     */
+    public function tags(): void
+    {
+        $tags = $this->request->getParam('pass');
+
+        $articles = $this->Articles->find('tagged', [
+            'tags' => $tags,
+        ])
+            ->contain('Tags')
+            ->all();
+
+        $this->set(compact('articles', 'tags'));
+    }
 }

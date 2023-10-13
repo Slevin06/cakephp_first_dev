@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Article;
+use Cake\Datasource\EntityInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
@@ -17,19 +20,19 @@ use Cake\Validation\Validator;
  * @property UsersTable&BelongsTo $Users
  * @property TagsTable&BelongsToMany $Tags
  *
- * @method \App\Model\Entity\Article newEmptyEntity()
- * @method \App\Model\Entity\Article newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\Article[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Article get($primaryKey, $options = [])
- * @method \App\Model\Entity\Article findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\Article patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Article[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\Article|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Article saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method Article newEmptyEntity()
+ * @method Article newEntity(array $data, array $options = [])
+ * @method Article[] newEntities(array $data, array $options = [])
+ * @method Article get($primaryKey, $options = [])
+ * @method Article findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method Article patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Article[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method Article|false save(EntityInterface $entity, $options = [])
+ * @method Article saveOrFail(EntityInterface $entity, $options = [])
+ * @method Article[]|ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method Article[]|ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method Article[]|ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method Article[]|ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin TimestampBehavior
  */
@@ -112,5 +115,38 @@ class ArticlesTable extends Table
         $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
 
         return $rules;
+    }
+
+    /**
+     * タグで記事検索する
+     *
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
+    public function findTagged(Query $query, array $options): Query
+    {
+        $this->setAlias('A');
+        $columns = [
+            'A.id', 'A.user_id', 'A.title',
+            'A.body', 'A.published', 'A.created',
+            'A.slug',
+        ];
+
+        $query = $query
+            ->select($columns)
+            ->distinct($columns);
+
+        if (empty($options['tags'])) {
+            // タグが指定されていない場合はタグのない記事を検索する
+            $query->leftJoinWith('Tags')
+                ->where(['Tags.title IS' => null]);
+        } else {
+            // 提供されたタグが1つ以上ある記事を検索する
+            $query->innerJoinWith('Tags')
+                ->where(['Tags.title IN' => $options['tags']]);
+        }
+
+        return $query->group(['A.id']);
     }
 }

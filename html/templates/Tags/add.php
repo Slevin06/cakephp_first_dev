@@ -1,9 +1,14 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Tag $tag
- * @var \Cake\Collection\CollectionInterface|string[] $articles
+ * @var AppView $this
+ * @var Tag $tag
+ * @var CollectionInterface|string[] $articles
  */
+
+use App\Model\Entity\Tag;
+use App\View\AppView;
+use Cake\Collection\CollectionInterface;
+
 ?>
 <div class="row">
     <aside class="column">

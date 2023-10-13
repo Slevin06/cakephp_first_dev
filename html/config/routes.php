@@ -57,6 +57,12 @@ return static function (RouteBuilder $routes) {
          */
         $builder->connect('/pages/*', 'Pages::display');
 
+        // タグによる記事検索
+        $builder->scope('/articles', function (RouteBuilder $builder) {
+            $builder->connect('/tagged/*', ['controller' => 'Articles', 'action' => 'tags',
+            ]);
+        });
+
         /*
          * Connect catchall routes for all controllers.
          *
